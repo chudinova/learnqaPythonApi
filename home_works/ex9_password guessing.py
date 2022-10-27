@@ -22,6 +22,6 @@ for password in passwords:
     if check_auth_cookie_response_text == "You are NOT authorized":
         continue
     else:
-        print(password)
-        print(check_auth_cookie_response_text)
+        print(f"Correct password is - <{password}>")
+        print(f"POST check_auth_cookie response text is - <{check_auth_cookie_response_text}>")
         break

@@ -28,18 +28,18 @@ time.sleep(seconds)
 
 # 4
 response_status_check_when_task_is_done = requests.get(url, params=params)
-response_json_when_task_is_done = json.loads(response_status_check_when_task_is_done.text)
-if response_json_when_task_is_done['status'] != "Job is NOT ready":
+response_status_check_when_task_is_done_json = json.loads(response_status_check_when_task_is_done.text)
+if response_status_check_when_task_is_done_json['status'] != "Job is NOT ready":
     print("✔", end=' ')
-    print(f"Status parameter when task is done is - \"{response_json_when_task_is_done['status']}\"")
+    print(f"Status parameter when task is done is - \"{response_status_check_when_task_is_done_json['status']}\"")
 else:
     print("✖", end=' ')
-    print(f"Status parameter when task isn't done is - \"{response_json_when_task_is_done['status']}\"")
+    print(f"Status parameter when task isn't done is - \"{response_status_check_when_task_is_done_json['status']}\"")
 
-if response_json_when_task_is_done['result'] != "":
+if response_status_check_when_task_is_done_json['result'] != "":
     print("✔", end=' ')
-    print(f"Result parameter when task is done is - \"{response_json_when_task_is_done['result']}\"")
+    print(f"Result parameter when task is done is - \"{response_status_check_when_task_is_done_json['result']}\"")
 else:
     print("✖", end=' ')
-    print(f"Result parameter when task isn't done is - \"{response_json_when_task_is_done['result']}\"")
+    print(f"Result parameter when task isn't done is - \"{response_status_check_when_task_is_done_json['result']}\"")
 
