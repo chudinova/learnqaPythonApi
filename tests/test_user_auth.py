@@ -1,14 +1,15 @@
 import pytest
-import requests
-
+import allure
+from lib.my_requests import MyRequests
 from lib.assertions import Assertions
 from lib.base_case import BaseCase
 
 
+@allure.epic("Authorisation cases")
 class TestUserAuth(BaseCase):
     exclude_params = [
-        ("no_cookie"),
-        ("no_token")
+        "no_cookie",
+        "no_token"
     ]
 
     def setup(self):
@@ -16,15 +17,16 @@ class TestUserAuth(BaseCase):
             'email': 'vinkotov@example.com',
             'password': '1234'
         }
-        response1 = requests.post("https://playground.learnqa.ru/api/user/login", data=data)
+        response1 = MyRequests.post('/user/login', data=data)
 
         self.auth_sid = self.get_cookie(response1, "auth_sid")
         self.token = self.get_header(response1, "x-csrf-token")
         self.user_id_from_auth_method = self.get_json_value(response1, "user_id")
 
+    @allure.description("This test successfully authorize user by email and password")
     def test_auth_user(self):
-        response2 = requests.get(
-            "https://playground.learnqa.ru/api/user/auth",
+        response2 = MyRequests.get(
+            '/user/auth',
             headers={"x-csrf-token": self.token},
             cookies={"auth_sid": self.auth_sid}
         )
@@ -36,16 +38,17 @@ class TestUserAuth(BaseCase):
             "User id from auth method is not equal to user id from check method"
         )
 
+    @allure.description("This test checks authorization status w/o sending auth cookie or token")
     @pytest.mark.parametrize('condition', exclude_params)
     def test_negative_auth_check(self, condition):
         if condition == "no_cookie":
-            response2 = requests.get(
-                "https://playground.learnqa.ru/api/user/auth",
+            response2 = MyRequests.get(
+                "/user/auth",
                 headers={"x-csrf-token": self.token}
             )
         else:
-            response2 = requests.get(
-                "https://playground.learnqa.ru/api/user/auth",
+            response2 = MyRequests.get(
+                "/user/auth",
                 cookies={"auth_sid": self.auth_sid}
             )
 
@@ -55,3 +58,7 @@ class TestUserAuth(BaseCase):
             0,
             f"User is authorized with condition '{condition}'"
         )
+
+# python -m pytest -s tests/test_user_auth.py
+# python -m pytest --alluredir=test_results/ tests/test_user_auth.py
+# allure serve test_results
