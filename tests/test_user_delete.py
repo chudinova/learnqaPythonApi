@@ -1,6 +1,7 @@
 from lib.assertions import Assertions
 from lib.base_case import BaseCase
 from lib.my_requests import MyRequests
+import pytest
 
 
 class TestUserDelete(BaseCase):
@@ -158,4 +159,4 @@ class TestUserDelete(BaseCase):
         Assertions.assert_code_status(response5, 200)
         Assertions.assert_json_has_key(response5, "user_id")
 
-# python -m pytest -s test_user_delete.py
+# python -m pytest -s tests/test_user_delete.py
