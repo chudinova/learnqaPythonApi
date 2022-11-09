@@ -1,11 +1,14 @@
+import allure
+
 from lib.assertions import Assertions
 from lib.base_case import BaseCase
 from lib.my_requests import MyRequests
-import pytest
 
 
+@allure.epic("Delete user cases")
 class TestUserDelete(BaseCase):
 
+    @allure.description("This test is try to delete vinkotov user")
     def test_delete_vinkotov_user(self):
         # LOGIN BY USER
         login_data = {
@@ -42,6 +45,7 @@ class TestUserDelete(BaseCase):
 
         Assertions.assert_code_status(response4, 200)
 
+    @allure.description("This test is delete just created user")
     def test_delete_just_created_user(self):
         # REGISTER
         register_data = self.prepare_registration_data()
@@ -90,6 +94,7 @@ class TestUserDelete(BaseCase):
         Assertions.assert_code_status(response4, 404)
         Assertions.assert_response_text(response4, "User not found")
 
+    @allure.description("This test is try to delete user by anoughter user")
     def test_delete_anoughter_user_by_authorized_user(self):
         # REGISTER FOR USER1
         user1_register_data = self.prepare_registration_data()

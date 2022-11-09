@@ -2,9 +2,13 @@ from lib.assertions import Assertions
 from lib.base_case import BaseCase
 from lib.my_requests import MyRequests
 import pytest
+import allure
 
 
+@allure.epic("Edit user cases")
 class TestUserEdit(BaseCase):
+
+    @allure.description("This test is edit just created user")
     def test_edit_just_created_user(self):
         # REGISTER
         register_data = self.prepare_registration_data()
@@ -49,6 +53,7 @@ class TestUserEdit(BaseCase):
             "Wrong name of the user after edit"
         )
 
+    @allure.description("This test is edit just created user without authorisation")
     def test_edit_just_created_user_without_authorization(self):
         # REGISTER
         register_data = self.prepare_registration_data()
@@ -73,6 +78,7 @@ class TestUserEdit(BaseCase):
         Assertions.assert_code_status(response2, 400)
         Assertions.assert_response_text(response2, "Auth token not supplied")
 
+    @allure.description("This test is try to edit user by anoughter authorized user")
     def test_edit_just_created_user_by_other_authorized_user(self):
         # REGISTER FOR USER1
         user1_register_data = self.prepare_registration_data()
@@ -161,6 +167,7 @@ class TestUserEdit(BaseCase):
 
     incorrect_params = {"email", "firstName"}
 
+    @allure.description("This test is edit just created user with incorrect data")
     @pytest.mark.parametrize("incorrect_parameter", incorrect_params)
     def test_edit_just_created_user_with_incorrect_data(self, incorrect_parameter):
 

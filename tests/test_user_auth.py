@@ -31,6 +31,7 @@ class TestUserAuth(BaseCase):
             cookies={"auth_sid": self.auth_sid}
         )
 
+
         Assertions.assert_json_value_by_name(
             response2,
             "user_id",
